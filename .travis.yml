@@ -16,8 +16,8 @@ jobs:
       install: skip
       script: ./gradlew clean build
       before_deploy:
-        - git config --local user.name "manivelpg"
-        - git config --local user.email "manivelpg@gmail.com"
+        - git config --local user.name "Travis CI"
+        - git config --local user.email "travis@example.com"
         - git tag -f $RELEASE_TAG
       deploy:
         provider: releases
@@ -37,14 +37,10 @@ jobs:
         - echo "Downloading $RELEASE_TAG"
         - wget -P build/libs https://github.com/$GITHUB_USERNAME/pal-tracker/releases/download/$RELEASE_TAG/pal-tracker.jar
       before_deploy:
-<<<<<<< HEAD
-        - echo "Deploying  $RELEASE_TAG to Cloud Foundry"
-=======
         - echo "Deploying $RELEASE_TAG to Cloud Foundry"
       before_script:
         - cf login -a $CF_API_URL -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE
         - scripts/migrate-databases.sh pal-tracker .
->>>>>>> b0d591d... Add task for migrating databases
       deploy:
         provider: cloudfoundry
         api: $CF_API_URL
