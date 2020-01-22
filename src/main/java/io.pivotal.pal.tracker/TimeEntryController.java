@@ -14,7 +14,6 @@ public class TimeEntryController {
 
     TimeEntryRepository timeEntryRepository;
 
-    @Autowired
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
         this.timeEntryRepository=timeEntryRepository;
     }
@@ -22,40 +21,39 @@ public class TimeEntryController {
    @PostMapping("/time-entries")
     public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntryToCreate) {
         timeEntryToCreate=timeEntryRepository.create(timeEntryToCreate);
-        return new ResponseEntity(timeEntryToCreate, HttpStatus.CREATED);
+        return new ResponseEntity<>(timeEntryToCreate, HttpStatus.CREATED);
     }
 
     @GetMapping("/time-entries/{timeEntryId}")
     public ResponseEntity<TimeEntry> read(@PathVariable long timeEntryId) {
         TimeEntry timeEntry = timeEntryRepository.find(timeEntryId);
         if( timeEntry!=null){
-            return new ResponseEntity(timeEntry, HttpStatus.OK);
+            return new ResponseEntity<>(timeEntry, HttpStatus.OK);
         }else{
-            return new ResponseEntity(timeEntry, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(timeEntry, HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/time-entries")
     public ResponseEntity<List<TimeEntry>> list() {
-        ResponseEntity<List<TimeEntry>>  listResponseEntity = null;
         List<TimeEntry> timeEntryList = timeEntryRepository.list();
         if(timeEntryList != null){
-            return new ResponseEntity(timeEntryList, HttpStatus.OK);
+            return new ResponseEntity<>(timeEntryList, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity(timeEntryList, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(timeEntryList, HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/time-entries/{timeEntryId}")
     public ResponseEntity<TimeEntry> update(@PathVariable long timeEntryId,@RequestBody TimeEntry expected) {
         expected=timeEntryRepository.update(timeEntryId,expected);
-        return expected !=null ? new ResponseEntity(expected, HttpStatus.OK) : new ResponseEntity(expected, HttpStatus.NOT_FOUND);
+        return expected !=null ? new ResponseEntity<>(expected, HttpStatus.OK) : new ResponseEntity<>(expected, HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/time-entries/{timeEntryId}")
-    public ResponseEntity delete(@PathVariable long timeEntryId) {
+    public ResponseEntity<String> delete(@PathVariable long timeEntryId) {
         timeEntryRepository.delete(timeEntryId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
